@@ -16,9 +16,14 @@ if [ ! -f "$CONF_FILE" ]; then
 	sed -i -E "s|#dbtype\s+=>.*,|dbtype => 'sqlite',|" "$CONF_FILE"
 	sed -i -E "s|#db_path\s+=>.*,|db_path => '$DB_FILE',|" "$CONF_FILE"
 
+	# Protection par defaut
+	ADMIN_PASSWORD=$(head -c1024 /dev/urandom | sha1sum | cut -d' ' -f1)
+	echo "Admin passord: $ADMIN_PASSWORD"
+	sed -i -E "s|#adminpwd\s+=>.*,|adminpwd => '$ADMIN_PASSWORD',|" "$CONF_FILE"
+
 	# Pid file
-	sed -i "/hypnotoad => {/a	pid_file => '$APP_WORK/ltsu.pid'," "$CONF_FILE"
-	
+	sed -i "/hypnotoad => {/a        pid_file => '$APP_WORK/ltsu.pid'," "$CONF_FILE"
+
 fi
 
 if [ -f "$DB_FILE" ]; then
