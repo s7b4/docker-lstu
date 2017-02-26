@@ -28,7 +28,7 @@ RUN apk --no-cache add bash \
 	PERL_MM_USE_DEFAULT=1 cpan install Carton && \
 	rm -rf "$HOME/.cpan"*
 
-# Install ltsu
+# Install lstu
 RUN mkdir -p $APP_HOME $APP_WORK && \
 	wget -O - "https://framagit.org/luc/lstu/repository/archive.tar.gz?ref=$APP_TAG" \
 		| tar xz --strip-component=1 -C $APP_HOME && \

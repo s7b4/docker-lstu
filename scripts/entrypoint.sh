@@ -1,8 +1,8 @@
 #! /bin/bash
 set -e
 
-CONF_FILE="$APP_WORK/ltsu.conf"
-DB_FILE="$APP_WORK/ltsu.db"
+CONF_FILE="$APP_WORK/lstu.conf"
+DB_FILE="$APP_WORK/lstu.db"
 
 if [ ! -f "$CONF_FILE" ]; then
 	# Création de la configuration
@@ -22,7 +22,7 @@ if [ ! -f "$CONF_FILE" ]; then
 	sed -i -E "s|#adminpwd\s+=>.*,|adminpwd => '$ADMIN_PASSWORD',|" "$CONF_FILE"
 
 	# Pid file
-	sed -i "/hypnotoad => {/a        pid_file => '$APP_WORK/ltsu.pid'," "$CONF_FILE"
+	sed -i "/hypnotoad => {/a        pid_file => '$APP_WORK/lstu.pid'," "$CONF_FILE"
 
 fi
 
@@ -35,6 +35,6 @@ fi
 # Reset perms
 chown -R "$APP_USER" "$APP_WORK"
 
-# Démarrage de Ltsu
+# Démarrage de Lstu
 cd "$APP_HOME" && \
 	MOJO_CONFIG="$CONF_FILE" exec su-exec "$APP_USER" carton exec hypnotoad -f script/lstu
