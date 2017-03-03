@@ -3,6 +3,7 @@ set -e
 
 CONF_FILE="$APP_WORK/lstu.conf"
 DB_FILE="$APP_WORK/lstu.db"
+PID_FILE="$APP_WORK/lstu.pid"
 
 if [ ! -f "$CONF_FILE" ]; then
 	# Création de la configuration
@@ -22,7 +23,7 @@ if [ ! -f "$CONF_FILE" ]; then
 	sed -i -E "s|#adminpwd\s+=>.*,|adminpwd => '$ADMIN_PASSWORD',|" "$CONF_FILE"
 
 	# Pid file
-	sed -i "/hypnotoad => {/a        pid_file => '$APP_WORK/lstu.pid'," "$CONF_FILE"
+	sed -i "/hypnotoad => {/a        pid_file => '$PID_FILE'," "$CONF_FILE"
 
 fi
 
@@ -34,6 +35,12 @@ fi
 
 # Reset perms
 chown -R "$APP_USER" "$APP_WORK"
+
+# Clean pid file
+if [ -f "$PID_FILE" ]; then
+	echo "Removing $PID_FILE .."
+	rm -f $PID_FILE
+fi
 
 # Démarrage de Lstu
 cd "$APP_HOME" && \
