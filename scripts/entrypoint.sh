@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 set -e
 
 CONF_FILE="$APP_WORK/lstu.conf"
