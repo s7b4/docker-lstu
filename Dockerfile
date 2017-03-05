@@ -38,7 +38,7 @@ RUN mkdir -p $APP_HOME $APP_WORK \
 	&& apk --no-cache --upgrade add sqlite-dev postgresql-dev zlib-dev \
 	&& make installdeps \
 	&& apk --no-cache del sqlite-dev postgresql-dev zlib-dev \
-	&& rm -rf "$APP_HOME/log" "$APP_HOME/t" "$APP_HOME/utilities" \
+	&& rm -rf "$APP_HOME/log" "$APP_HOME/t" \
 	&& rm -rf "$HOME/.cpan"*
 
 COPY scripts/entrypoint.sh /entrypoint.sh
