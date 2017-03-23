@@ -1,5 +1,5 @@
 FROM alpine:3.5
-MAINTAINER s7b4 <baron.stephane@gmail.com>
+LABEL maintainer "s7b4 <baron.stephane@gmail.com>"
 
 ENV APP_USER lstu
 ENV APP_HOME /opt/$APP_USER
@@ -35,9 +35,15 @@ RUN mkdir -p $APP_HOME $APP_WORK \
 	&& wget -O - "https://framagit.org/luc/lstu/repository/archive.tar.gz?ref=$APP_TAG" \
 		| tar xz --strip-component=1 -C $APP_HOME \
 	&& cd $APP_HOME \
-	&& apk --no-cache --upgrade add sqlite-dev postgresql-dev zlib-dev \
+	&& apk --no-cache --upgrade add \
+		sqlite-dev \
+		postgresql-dev \
+		zlib-dev \
 	&& make installdeps \
-	&& apk --no-cache del sqlite-dev postgresql-dev zlib-dev \
+	&& apk --no-cache del \
+		sqlite-dev \
+		postgresql-dev \
+		zlib-dev \
 	&& rm -rf "$APP_HOME/log" "$APP_HOME/t" \
 	&& rm -rf "$HOME/.cpan"*
 
