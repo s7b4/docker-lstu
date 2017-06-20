@@ -1,50 +1,46 @@
-FROM alpine:3.6
+FROM debian:stretch
 LABEL maintainer "s7b4 <baron.stephane@gmail.com>"
 
 ENV APP_USER=lstu \
-	APP_TAG=0.08-2
+	APP_TAG=0.08-2 \
+	GOSU_VERSION=1.10
 
 ENV APP_HOME=/opt/$APP_USER \
 	APP_WORK=/home/$APP_USER
 
 # set user/group IDs
-RUN addgroup $APP_USER && \
-	adduser -G $APP_USER -D -H -s /bin/bash -h $APP_HOME $APP_USER
+RUN groupadd -r "$APP_USER" --gid=999 \
+	&& useradd -m -r -g "$APP_USER" --uid=999 "$APP_USER"
 
-# Base
-RUN apk --no-cache --upgrade add \
-		su-exec \
-		ca-certificates \
-		wget \
-		tar \
-		perl \
-		perl-dev \
-		zlib \
-		sqlite \
-		gcc \
+# Perl base
+RUN apt-get update \
+	&& apt-get install --no-install-recommends --yes \
+		procps \
 		make \
-		libressl \
-		musl-dev \
-		sqlite-libs \
-		postgresql-libs \
-		libressl2.5-libtls \
-	&& PERL_MM_USE_DEFAULT=1 cpan install Carton >/dev/null \
-	&& rm -rf "$HOME/.cpan"*
+		curl \
+		sqlite3 \
+		ca-certificates \
+		gcc \
+		libperl-dev \
+		libpq-dev \
+		libsqlite3-dev \
+		libssl-dev \
+		zlib1g-dev \
+		carton \
+		libmodule-install-perl \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Gosu
+RUN curl -o /usr/local/sbin/gosu -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+	&& chmod +x /usr/local/sbin/gosu
 
 # Install lstu
 RUN mkdir -p $APP_HOME $APP_WORK \
-	&& wget -O - "https://framagit.org/luc/lstu/repository/archive.tar.gz?ref=$APP_TAG" \
+	&& curl -sSL "https://framagit.org/luc/lstu/repository/archive.tar.gz?ref=$APP_TAG" \
 		| tar xz --strip-component=1 -C $APP_HOME \
 	&& cd $APP_HOME \
-	&& apk --no-cache --upgrade add \
-		sqlite-dev \
-		postgresql-dev \
-		zlib-dev \
 	&& make installdeps \
-	&& apk --no-cache del \
-		sqlite-dev \
-		postgresql-dev \
-		zlib-dev \
 	&& rm -rf "$APP_HOME/log" "$APP_HOME/t" \
 	&& rm -rf "$HOME/.cpan"*
 

@@ -44,4 +44,4 @@ fi
 
 # Démarrage de Lstu
 cd "$APP_HOME" && \
-	MOJO_CONFIG="$CONF_FILE" exec su-exec "$APP_USER" carton exec hypnotoad -f script/lstu
+	MOJO_CONFIG="$CONF_FILE" exec gosu "$APP_USER" carton exec hypnotoad -f script/lstu
