@@ -1,8 +1,8 @@
 FROM debian:stretch
-LABEL maintainer "s7b4 <baron.stephane@gmail.com>"
+LABEL maintainer="s7b4 <baron.stephane@gmail.com>"
 
 ENV APP_USER=lstu \
-	APP_TAG=0.08-2 \
+	APP_TAG=0.09-2 \
 	GOSU_VERSION=1.10
 
 ENV APP_HOME=/opt/$APP_USER \
@@ -13,8 +13,8 @@ RUN groupadd -r "$APP_USER" --gid=999 \
 	&& useradd -m -r -g "$APP_USER" --uid=999 "$APP_USER"
 
 # Perl base
-RUN apt-get update \
-	&& apt-get install --no-install-recommends --yes \
+RUN apt-get update --quiet \
+	&& apt-get install --no-install-recommends --quiet --yes \
 		procps \
 		make \
 		curl \
@@ -26,9 +26,11 @@ RUN apt-get update \
 		libsqlite3-dev \
 		libssl-dev \
 		zlib1g-dev \
+		libpng-dev \
+		default-libmysqlclient-dev \
 		carton \
 		libmodule-install-perl \
-	&& apt-get clean \
+	&& apt-get clean --quiet \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Gosu
