@@ -2,7 +2,7 @@ FROM debian:stretch
 LABEL maintainer="s7b4 <baron.stephane@gmail.com>"
 
 ENV APP_USER=lstu \
-	APP_TAG=0.09-2 \
+	APP_TAG=0.10 \
 	GOSU_VERSION=1.10
 
 ENV APP_HOME=/opt/$APP_USER \
