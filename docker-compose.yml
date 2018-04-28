@@ -1,4 +1,10 @@
 app:
   build: .
+  links:
+    - cache
   ports:
     - "8080:8080"
+
+cache:
+  image: memcached:1.5
+  command: memcached -m 32
