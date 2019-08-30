@@ -1,9 +1,9 @@
-FROM debian:stretch
+FROM debian:buster
 LABEL maintainer="s7b4 <baron.stephane@gmail.com>"
 
 ENV APP_USER=lstu \
-	APP_TAG=0.21-0 \
-	GOSU_VERSION=1.10
+	APP_TAG=0.21-4 \
+	GOSU_VERSION=1.11
 
 ENV APP_HOME=/opt/$APP_USER \
 	APP_WORK=/home/$APP_USER
